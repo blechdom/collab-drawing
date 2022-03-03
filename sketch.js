@@ -1,8 +1,18 @@
+let socket = io("http://localhost:3000")
 let colorPicker, sel
 let weight = 1
 
 function setup() {
-  createCanvas(800, 600)
+
+  socket.on("connect", () => {
+    // either with send()
+    socket.send("Hello!");
+  
+    
+  });
+  
+ 
+  createCanvas(800,600)
   background(0)
  
   colorPicker = createColorPicker("white")
