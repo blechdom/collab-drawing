@@ -11,6 +11,12 @@ const io = new Server(httpServer, {
 httpServer.listen(3000);
 io.on('connection', function (socket) {
     console.log("We have a new client: " + socket.id);
+    socket.on('mouse', function (data) {
+        socket.broadcast.emit('mouseReceiver', data)
+        console.log(data);
+       
+    })
+
   }
 );
 

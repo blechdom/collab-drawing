@@ -4,12 +4,12 @@ let weight = 1
 
 function setup() {
 
-  socket.on("connect", () => {
-    // either with send()
-    socket.send("Hello!");
-  
-    
-  });
+  socket.on('mouseReceiver', (data) => {
+    console.log('mouse received ', data.color)
+    stroke(data.color)
+		strokeWeight(data.weight)
+		line(data.x, data.y, data.pX, data.pY)
+  })
   
  
   createCanvas(800,600)
@@ -26,17 +26,33 @@ function setup() {
   sel.option('strokeWeight = 9', 9);
   sel.selected('strokeWeight = 1');
   sel.changed(changeStrokeWeight);
+ 
+   socket.emit('mouse', 'hello world')
+  
 }
 
 function draw() {
-  stroke(colorPicker.color())
+  stroke(colorPicker.value())
   strokeWeight(weight)
   if (mouseIsPressed === true) {
     line(mouseX, mouseY, pmouseX, pmouseY)
+    sendMouse(mouseX, mouseY, pmouseX, pmouseY)
   }
 }
 
 function changeStrokeWeight() {
   weight = sel.value()
+}
+
+function sendMouse(x, y, pX, pY) {
+  const mouseData = {
+    x,
+    y,
+    pX,
+    pY,
+    color: colorPicker.value(),
+    weight
+  }
+  socket.emit('mouse', mouseData)
 }
   
